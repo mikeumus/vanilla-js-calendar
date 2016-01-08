@@ -16,38 +16,52 @@ window.onload = function onReadyClojure(){
         this.daysInMonth = new Date(theDate.getFullYear(), theDate.getMonth()+1, 0).getDate();
     };
     
-    
-    var startingDate = new DateObject(theDate);
-    
-    function goToPrevMonth(startingDate) {
-        return new Date(this.getFullYear(), this.getMonth()-1, 1);
-    }
-    
-    /*function daysInMonth(month,year) {
-        return new Date(year, month, 0).getDate();
-    }*/
-    
-    function renderCalendar(targetElem, DateObject){
+    var currentDate = new DateObject(theDate);
+
+    function renderCalendar(targetElem){
+        
+        currentDate = new DateObject(theDate);
         
         var renderTarget = document.getElementById(targetElem);
-        // var calTable = document.createElement("TABLE"); //.className = "calendar-table";
-        // renderTarget.appendChild(calTable);
+        renderTarget.remove();
+        renderTarget = document.createElement("DIV");
+        renderTarget.setAttribute("id", targetElem);
+        document.getElementsByTagName('body')[0].appendChild(renderTarget);
+        
+        var calendarContainer = document.createElement("DIV");
+        renderTarget.appendChild(calendarContainer);
+
         var prevMonthSpan = document.createElement("SPAN");
-        prevMonthSpan.addEventListener('click', goToPrevMonth(startingDate));
+        prevMonthSpan.addEventListener('click', function(){
+            goToMonth(currentDate, false);
+        });
         prevMonthSpan.classList.add('arrow', 'float-left', 'prev-arrow');
         var backArrow = document.createTextNode("<");
         prevMonthSpan.appendChild(backArrow);
         
         var nextMonthSpan = document.createElement("SPAN");
-        nextMonthSpan.addEventListener('click', goToNextMonth(startingDate));
+        nextMonthSpan.addEventListener('click', function(){
+            goToMonth(currentDate, true);
+        });
         nextMonthSpan.classList.add('arrow', 'float-right', 'next-arrow');
         var nextArrow = document.createTextNode(">");
         nextMonthSpan.appendChild(nextArrow);
         
+        document.onkeydown = function() {
+            switch (window.event.keyCode) {
+                case 37: //Left key
+                    goToMonth(currentDate, false);
+                    break;
+                case 39: //Right key
+                    goToMonth(currentDate, true);
+                    break;
+            }
+        };
+        
         var monthSpan = document.createElement("SPAN");
-        monthSpan.className = "month-container"; 
+        monthSpan.className = "month-header"; 
         var monthOf = document.createTextNode(
-            startingDate.theMonth +" "+ startingDate.theYear
+            currentDate.theMonth +" "+ currentDate.theYear
         );
         monthSpan.appendChild(prevMonthSpan);
         monthSpan.appendChild(monthOf);
@@ -55,10 +69,10 @@ window.onload = function onReadyClojure(){
         renderTarget.appendChild(monthSpan);
         
         // renderTarget.appendChild(document.createElement("UL"));
-        for(i = 0; i < startingDate.daysInMonth; i++){
+        for(i = 0; i < currentDate.daysInMonth; i++){
             var calendarCell = document.createElement("LI");
             calendarCell.setAttribute('id', 'day'+i);
-            if(i === startingDate.theDay-1){
+            if(i === currentDate.theDay-1){
                 calendarCell.className = "today";
             }
             var dayOfMonth = document.createTextNode(i+1);
@@ -68,24 +82,17 @@ window.onload = function onReadyClojure(){
         }
     }
     
-    /*function goToPrevMonth(startingDate){
-        // startingDate = startingDate.theMonth - 1;
-        // renderCalendar("calendarThis");
-    }*/
-    
-    function goToNextMonth(startingDate){
-        // startingDate = startingDate.theMonth + 1;
-        // renderCalendar("calendarThis");
-    }
-    
+    // console.log(new DateObject(theDate));
     renderCalendar("calendarThis");
     
-    console.log(new DateObject(theDate));
     
-    // console.log(new DateObject(theDate));
+    function goToMonth(currentDate, direction) {
+        if (direction == false){
+            theDate = new Date(theDate.getFullYear(), theDate.getMonth()-1, 1);
+        } else{
+            theDate = new Date(theDate.getFullYear(), theDate.getMonth()+1, 1);
+        }
+        return renderCalendar("calendarThis");
+    }
     
-    /*var calendarCreator = function CalendarCreator(dateObject) {
-        this.date = 3;   
-    } */
-    debugger; 
 };
