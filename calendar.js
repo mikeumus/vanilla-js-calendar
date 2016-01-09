@@ -1,9 +1,8 @@
 /* Vanilla JS Calendar */
 
 // https://stackoverflow.com/questions/1643320/get-month-name-from-date
-var monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 window.onload = function onReadyClojure(){
     
@@ -11,29 +10,58 @@ window.onload = function onReadyClojure(){
     
     var DateObject = function DateObject(theDate) {
         this.theDay = theDate.getDate();
+        this.dayName = dayNames[theDate.getDay()];
         this.theMonth = monthNames[theDate.getMonth()];
         this.theYear = theDate.getFullYear();
         this.daysInMonth = new Date(theDate.getFullYear(), theDate.getMonth()+1, 0).getDate();
     };
     
     var currentDate = new DateObject(theDate);
-
+    
+    function circleBackDays(){
+        if (typeof dayNames[theDate.getDay()+1] === "undefined") {
+            return dayNames[theDate.getDay()-6];
+        } else{
+            return dayNames[theDate.getDay()+1];
+        }
+    }
+    
     function renderCalendar(targetElem){
+        
+        // Custom function to make new elements easier:
+        function addElem(elementType, elemClass, appendTarget){
+            appendTarget.innerHTML += "<"+elementType+" class="+elemClass+"> </"+elementType+">";
+        }
         
         currentDate = new DateObject(theDate);
         
         var renderTarget = document.getElementById(targetElem);
         renderTarget.remove();
         renderTarget = document.createElement("DIV");
-        renderTarget.setAttribute("id", targetElem);
+        renderTarget.id = targetElem;
         document.getElementsByTagName('body')[0].appendChild(renderTarget);
         
-        var calendarContainer = document.createElement("DIV");
-        renderTarget.appendChild(calendarContainer);
+        // Monday, dayView
+        addElem("DIV", "day-view", renderTarget);
+        var dayView = document.querySelector('.day-view');
+        var dayNameElem = document.createElement("DIV");
+        dayNameElem.className = "day-header";
+        var dayNameNode = document.createTextNode(currentDate.dayName);
+        dayNameElem.appendChild(dayNameNode);
+        dayView.appendChild(dayNameElem);
+        // 21st, dayNumber
+        addElem("DIV", "day-number", dayView);
+        var dayNumber = document.querySelector('.day-number');
+        var dayNumNode = document.createTextNode(currentDate.theDay);
+        dayNumber.appendChild(dayNumNode);
+        dayView.appendChild(dayNumber);
+        
+        addElem("DIV", "month-view", renderTarget);
+        var monthView = document.querySelector('.month-view');
 
         var prevMonthSpan = document.createElement("SPAN");
         prevMonthSpan.addEventListener('click', function(){
-            goToMonth(currentDate, false);
+            goToMonth(currentDate, false); // Go To Previous Month
         });
         prevMonthSpan.classList.add('arrow', 'float-left', 'prev-arrow');
         var backArrow = document.createTextNode("<");
@@ -41,7 +69,7 @@ window.onload = function onReadyClojure(){
         
         var nextMonthSpan = document.createElement("SPAN");
         nextMonthSpan.addEventListener('click', function(){
-            goToMonth(currentDate, true);
+            goToMonth(currentDate, true); // Go To Next Month
         });
         nextMonthSpan.classList.add('arrow', 'float-right', 'next-arrow');
         var nextArrow = document.createTextNode(">");
@@ -63,24 +91,53 @@ window.onload = function onReadyClojure(){
         var monthOf = document.createTextNode(
             currentDate.theMonth +" "+ currentDate.theYear
         );
+        
         monthSpan.appendChild(prevMonthSpan);
         monthSpan.appendChild(monthOf);
         monthSpan.appendChild(nextMonthSpan);
-        renderTarget.appendChild(monthSpan);
+        monthView.appendChild(monthSpan);
+        
+        for(i=0; i < dayNames.length; i++){
+            var dayOfWeek = document.createElement('DIV');
+            dayOfWeek.className = "day-of-week";
+            var charOfDay = document.createTextNode(dayNames[i].charAt(0));
+            dayOfWeek.appendChild(charOfDay);
+            monthView.appendChild(dayOfWeek);
+        }
         
         // renderTarget.appendChild(document.createElement("UL"));
+        var calendarList = document.createElement("UL");
         for(i = 0; i < currentDate.daysInMonth; i++){
             var calendarCell = document.createElement("LI");
-            calendarCell.setAttribute('id', 'day'+i);
+            calendarList.appendChild(calendarCell);
+            calendarCell.id = 'day_'+i;
+            calendarCell.setAttribute('data-dayofweek', circleBackDays());
+            // debugger;
+            calendarCell.className = "calendar-cell"
             if(i === currentDate.theDay-1){
                 calendarCell.className = "today";
             }
             var dayOfMonth = document.createTextNode(i+1);
             calendarCell.appendChild(dayOfMonth);
-            renderTarget.appendChild(calendarCell);
-             
+            monthView.appendChild(calendarList);
+        } // daysInMonth for loop ends
+        
+    
+        var dayHeader = document.getElementsByClassName('day-header');
+        var dayNumNode = document.getElementsByClassName('day-number');
+        var updateDay = function(){
+            // dayHeader[0].textContent = 
+            dayNumNode[0].textContent = this.textContent;  
+            
+        } 
+        
+        var calCells = document.getElementsByClassName('calendar-cell');
+        for(i = 0; i < calCells.length; i++){
+            calCells[i].addEventListener('click', updateDay, false);
         }
-    }
+        
+    } // renderCalener function ends
+    
     
     // console.log(new DateObject(theDate));
     renderCalendar("calendarThis");

@@ -2,31 +2,72 @@ body{
     color: #82500D;
     height: 100vh;
 }
-.float-left{
+.float-left, .day-view{
     float: left;
 }
-.float-right{
+.float-right, .month-view{
     float: right;
 }
+.month-view ul{
+    padding: 0;
+    margin: 0;
+}
+
+.day-view{
+    text-align: center;
+    font-weight: bold;
+}
+    .day-header{
+        padding: 13px 0;
+        border: antiquewhite 2px solid;
+        background: #fff;
+    }
+    .day-number{
+        margin: 10% auto;
+        font-size: 144px;
+        background: #fff;
+        width: 83%;
+        border-radius: 2px;
+        border: #FFE2BB 1px dotted;
+    }
+
+.day-view, .month-view{
+    width: 343px;
+    display: block;
+    height: 281px;
+}
+.day-of-week{
+    background: #FFFCF9 !important;
+    font-weight: bold;
+    border: #fff 1px solid;
+    color: #D89F52;
+}
+
 #calendarThis{
     margin: 16% auto;
-    width: 294px;
+    width: 686px;
+    height: 312px;
     transition: box-shadow .25s;
     border-radius: 2px;
     padding: 3px 2px 2px 2px;
     background: #FFFCF9;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
-    #calendarThis li{
+    #calendarThis li, .day-of-week{
         display: inline-block;
         padding: 13px 7px;
         width: 33px;
         border: #FFF9F2 1px solid;
         text-align: center;
         background: antiquewhite;
+        cursor: pointer;
     }
+        #calendarThis li:hover{
+            border: #F9E0B6 1px solid;
+            background: #fff;
+        }
     .month-header{
-        width: 290px;
+        width: 99%;
         display: block;
         text-align: center;
         padding: 13px 0;
@@ -40,14 +81,9 @@ body{
     }
     .arrow{
         width: 45px;
+        height: 35px;
         margin: auto 0 auto 0;
         text-align: center;
         font-weight: bold;
         cursor: pointer;
     }
-        .prev-arrow{
-            height: 43px;
-        }
-        .next-arrow{
-            height: 35px;
-        }
