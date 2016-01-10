@@ -7,6 +7,9 @@ var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
 window.onload = function onReadyClojure(){
     
     var theDate = new Date();
+    var dateConstructor = function(){
+        return new Date();
+    };
     
     var DateObject = function DateObject(theDate) {
         this.theDay = theDate.getDate();
@@ -18,7 +21,14 @@ window.onload = function onReadyClojure(){
     
     var currentDate = new DateObject(theDate);
     
-    function circleBackDays(){
+    /* Peusod Code
+    
+    dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), i);
+    dayNames[dayDataDate.getDay()];
+    
+    */
+    
+    function circleBackDays(i){
         if (typeof dayNames[theDate.getDay()+1] === "undefined") {
             return dayNames[theDate.getDay()-6];
         } else{
@@ -110,10 +120,11 @@ window.onload = function onReadyClojure(){
         for(i = 0; i < currentDate.daysInMonth; i++){
             var calendarCell = document.createElement("LI");
             calendarList.appendChild(calendarCell);
-            calendarCell.id = 'day_'+i;
-            calendarCell.setAttribute('data-dayofweek', circleBackDays());
-            // debugger;
-            calendarCell.className = "calendar-cell"
+            calendarCell.id = 'day_'+i+1;
+            var dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), i+1);
+            calendarCell.setAttribute('data-dayofweek', dayNames[dayDataDate.getDay()]);
+            debugger;
+            calendarCell.className = "calendar-cell";
             if(i === currentDate.theDay-1){
                 calendarCell.className = "today";
             }
@@ -126,7 +137,7 @@ window.onload = function onReadyClojure(){
         var dayHeader = document.getElementsByClassName('day-header');
         var dayNumNode = document.getElementsByClassName('day-number');
         var updateDay = function(){
-            // dayHeader[0].textContent = 
+            dayHeader[0].textContent = this.getAttribute('data-dayofweek');
             dayNumNode[0].textContent = this.textContent;  
             
         } 
