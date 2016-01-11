@@ -4,12 +4,9 @@
 var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-window.onload = function onReadyClojure(){
+document.addEventListener("DOMContentLoaded", function(event){
     
     var theDate = new Date();
-    var dateConstructor = function(){
-        return new Date();
-    };
     
     var DateObject = function DateObject(theDate) {
         this.theDay = theDate.getDate();
@@ -17,24 +14,10 @@ window.onload = function onReadyClojure(){
         this.theMonth = monthNames[theDate.getMonth()];
         this.theYear = theDate.getFullYear();
         this.daysInMonth = new Date(theDate.getFullYear(), theDate.getMonth()+1, 0).getDate();
+        this.firstDayOfMonth = dayNames[new Date(theDate.getFullYear(), theDate.getMonth(), 1).getDay()];
     };
     
     var currentDate = new DateObject(theDate);
-    
-    /* Peusod Code
-    
-    dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), i);
-    dayNames[dayDataDate.getDay()];
-    
-    */
-    
-    function circleBackDays(i){
-        if (typeof dayNames[theDate.getDay()+1] === "undefined") {
-            return dayNames[theDate.getDay()-6];
-        } else{
-            return dayNames[theDate.getDay()+1];
-        }
-    }
     
     function renderCalendar(targetElem){
         
@@ -125,7 +108,7 @@ window.onload = function onReadyClojure(){
             var dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), (i+1));
             calCellTime.setAttribute('datetime', dayDataDate.toISOString());
             calCellTime.setAttribute('data-dayofweek', dayNames[dayDataDate.getDay()]);
-            // debugger;
+            
             calendarCell.className = "calendar-cell";
             if(i === currentDate.theDay-1){
                 calendarCell.className = "today";
@@ -134,15 +117,30 @@ window.onload = function onReadyClojure(){
             calCellTime.appendChild(dayOfMonth);
             calendarCell.appendChild(calCellTime);
             monthView.appendChild(calendarList);
+            
         } // daysInMonth for loop ends
         
+        var dayOne = document.getElementById('day_1');
+        if (currentDate.firstDayOfMonth == "Monday"){
+            dayOne.style.marginLeft = "49px";
+        } else if (currentDate.firstDayOfMonth == "Tuesday"){
+            dayOne.style.marginLeft = "98px";
+        } else if (currentDate.firstDayOfMonth == "Wednesday"){
+            dayOne.style.marginLeft = "147px";
+        } else if (currentDate.firstDayOfMonth == "Thursday"){
+            dayOne.style.marginLeft = "196px";
+        } else if (currentDate.firstDayOfMonth == "Friday"){
+            dayOne.style.marginLeft = "245px";
+        } else if (currentDate.firstDayOfMonth == "Saturday"){
+            dayOne.style.marginLeft = "304px";
+        }
     
         var dayHeader = document.getElementsByClassName('day-header');
         var dayNumNode = document.getElementsByClassName('day-number');
         var updateDay = function(){
             var thisCellTime = this.querySelector('time');
             dayHeader[0].textContent = thisCellTime.getAttribute('data-dayofweek');
-            // debugger;
+            
             dayNumNode[0].textContent = this.textContent;  
             
         } 
@@ -154,10 +152,8 @@ window.onload = function onReadyClojure(){
         
     } // renderCalener function ends
     
-    
     // console.log(new DateObject(theDate));
     renderCalendar("calendarThis");
-    
     
     function goToMonth(currentDate, direction) {
         if (direction == false){
@@ -168,4 +164,4 @@ window.onload = function onReadyClojure(){
         return renderCalendar("calendarThis");
     }
     
-};
+});
