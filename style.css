@@ -18,7 +18,7 @@ hr{
 
 .container{
     text-align: left;
-    width: 54%;
+    width: 57%;
     margin: 7% auto 0;
 }
 
@@ -27,7 +27,7 @@ hr{
     display: inline-block;
     transition: box-shadow .25s;
     border-radius: 2px;
-    padding: 3px 2px 2px 2px;
+    padding: 9px 7px 9px 7px;
     background: #FFFCF9;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
@@ -52,7 +52,7 @@ hr{
 }
 .month-view ul{
     padding: 0;
-    margin: 0;
+    margin: 0 0 0 8px;
     text-align: left;
 }
 
@@ -78,7 +78,7 @@ hr{
     }
 
 .day-view, .month-view{
-    width: 343px;
+    width: 357px;
     display: block;
 }
 .day-of-week{
