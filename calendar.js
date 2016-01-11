@@ -47,26 +47,26 @@ window.onload = function onReadyClojure(){
         
         var renderTarget = document.getElementById(targetElem);
         renderTarget.remove();
-        renderTarget = document.createElement("DIV");
+        renderTarget = document.createElement("div");
         renderTarget.id = targetElem;
         document.getElementsByTagName('body')[0].appendChild(renderTarget);
         
         // Monday, dayView
-        addElem("DIV", "day-view", renderTarget);
+        addElem("div", "day-view", renderTarget);
         var dayView = document.querySelector('.day-view');
-        var dayNameElem = document.createElement("DIV");
+        var dayNameElem = document.createElement("div");
         dayNameElem.className = "day-header";
         var dayNameNode = document.createTextNode(currentDate.dayName);
         dayNameElem.appendChild(dayNameNode);
         dayView.appendChild(dayNameElem);
         // 21st, dayNumber
-        addElem("DIV", "day-number", dayView);
+        addElem("div", "day-number", dayView);
         var dayNumber = document.querySelector('.day-number');
         var dayNumNode = document.createTextNode(currentDate.theDay);
         dayNumber.appendChild(dayNumNode);
         dayView.appendChild(dayNumber);
         
-        addElem("DIV", "month-view", renderTarget);
+        addElem("div", "month-view", renderTarget);
         var monthView = document.querySelector('.month-view');
 
         var prevMonthSpan = document.createElement("SPAN");
@@ -108,28 +108,31 @@ window.onload = function onReadyClojure(){
         monthView.appendChild(monthSpan);
         
         for(i=0; i < dayNames.length; i++){
-            var dayOfWeek = document.createElement('DIV');
+            var dayOfWeek = document.createElement('div');
             dayOfWeek.className = "day-of-week";
             var charOfDay = document.createTextNode(dayNames[i].charAt(0));
             dayOfWeek.appendChild(charOfDay);
             monthView.appendChild(dayOfWeek);
         }
         
-        // renderTarget.appendChild(document.createElement("UL"));
-        var calendarList = document.createElement("UL");
+        // renderTarget.appendChild(document.createElement("ul"));
+        var calendarList = document.createElement("ul");
         for(i = 0; i < currentDate.daysInMonth; i++){
-            var calendarCell = document.createElement("LI");
+            var calendarCell = document.createElement("li");
+            var calCellTime = document.createElement("time");
             calendarList.appendChild(calendarCell);
-            calendarCell.id = 'day_'+i+1;
-            var dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), i+1);
-            calendarCell.setAttribute('data-dayofweek', dayNames[dayDataDate.getDay()]);
-            debugger;
+            calendarCell.id = 'day_'+(i+1);
+            var dayDataDate = new Date(theDate.getFullYear(), theDate.getMonth(), (i+1));
+            calCellTime.setAttribute('datetime', dayDataDate.toISOString());
+            calCellTime.setAttribute('data-dayofweek', dayNames[dayDataDate.getDay()]);
+            // debugger;
             calendarCell.className = "calendar-cell";
             if(i === currentDate.theDay-1){
                 calendarCell.className = "today";
             }
             var dayOfMonth = document.createTextNode(i+1);
-            calendarCell.appendChild(dayOfMonth);
+            calCellTime.appendChild(dayOfMonth);
+            calendarCell.appendChild(calCellTime);
             monthView.appendChild(calendarList);
         } // daysInMonth for loop ends
         
@@ -137,7 +140,9 @@ window.onload = function onReadyClojure(){
         var dayHeader = document.getElementsByClassName('day-header');
         var dayNumNode = document.getElementsByClassName('day-number');
         var updateDay = function(){
-            dayHeader[0].textContent = this.getAttribute('data-dayofweek');
+            var thisCellTime = this.querySelector('time');
+            dayHeader[0].textContent = thisCellTime.getAttribute('data-dayofweek');
+            // debugger;
             dayNumNode[0].textContent = this.textContent;  
             
         } 
