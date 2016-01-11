@@ -164,4 +164,4 @@ document.addEventListener("DOMContentLoaded", function(event){
         return renderCalendar("calendarThis");
     }
     
-});
+}); // DOMContentLoaded event listener ends

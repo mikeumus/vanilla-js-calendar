@@ -4,9 +4,26 @@ body{
     margin: auto;
     text-align: center;
 }
+a{
+    color:#d89f52;
+}
+pre{
+    text-align:left;
+    border: antiquewhite 1px solid;
+    padding: 13px 33px;
+}
+hr{
+    border: #d89f52 1px solid;
+}
+
+.container{
+    text-align: left;
+    width: 54%;
+    margin: 7% auto 0;
+}
 
 #calendarThis{
-    margin: 16% auto;
+    margin: 3% auto;
     display: inline-block;
     transition: box-shadow .25s;
     border-radius: 2px;
