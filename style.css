@@ -109,3 +109,10 @@ hr{
     font-weight: bold;
     cursor: pointer;
 }
+
+/* Portrait and Landscape */
+@media (max-width: 767px) {
+    #calendarThis{
+        width: 358px;
+    }
+}
