@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 				monthSpan.appendChild(nextMonthSpan);
 				monthView.appendChild(monthSpan);
 				
-				for(i=0; i < dayNames.length; i++){
+				for(var i=0; i < dayNames.length; i++){
 						var dayOfWeek = document.createElement('div');
 						dayOfWeek.className = "day-of-week";
 						var charOfDay = document.createTextNode(dayNames[i].charAt(0));
