@@ -66,6 +66,7 @@ hr{
         background: #fff;
     }
     .day-number{
+        display:block;
         margin: 10% auto;
         font-size: 144px;
         background: #fff;
